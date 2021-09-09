@@ -7,7 +7,7 @@
     "dev": "dumi dev",
     "build:site": "rimraf doc-site && dumi build",
     "preview:site": "cross-env SITE_BUILD_ENV=PREVIEW npm run build:site && serve doc-site",
-    "deploy:site": "npm run build:site && gh-pages -d doc-site"
+    "deploy:site": "npm run build:site && echo 'react-ui.yuanzhixiang.com' >> ./doc-site/CNAME && gh-pages -d doc-site"
   },
   "lint-staged": {
     "src/**/*.ts?(x)": [
