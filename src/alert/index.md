@@ -18,6 +18,4 @@ order: 1
 
 <code src="./demo/basic.tsx"></code>
 
-## API
-
 <API src="./index.tsx"></API>

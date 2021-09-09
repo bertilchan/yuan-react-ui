@@ -3,7 +3,7 @@ name: github pages
 on:
   push:
     branches:
-      - main # default branch
+      - main
 
 jobs:
   deploy:
@@ -12,6 +12,7 @@ jobs:
       - uses: actions/checkout@v2
       - run: yarn
       - run: yarn build:site
+      - run: echo 'react-ui.yuanzhixiang.com' >> ./doc-site/CNAME
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
