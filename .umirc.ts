@@ -8,6 +8,9 @@ if (process.env.SITE_BUILD_ENV === 'PREVIEW') {
     publicPath = '/';
 }
 
+base = '/';
+publicPath = '/';
+
 export default defineConfig({
     title: 'YUAN REACT UI', // 站点名称
     mode: 'site',
