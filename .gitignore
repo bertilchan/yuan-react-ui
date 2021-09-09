@@ -80,3 +80,5 @@ catalina.base_IS_UNDEFINED
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+.umi

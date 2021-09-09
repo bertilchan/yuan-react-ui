@@ -2,6 +2,10 @@ import React from 'react';
 import t from 'prop-types';
 
 export interface AlertProps {
+    /**
+     * @description       Alert 的类型
+     * @default           'info'
+     */
     kind?: 'info' | 'positive' | 'negative' | 'warning';
 }
 
@@ -16,7 +20,7 @@ const kinds: KindMap = {
     warning: '#FFA502',
 };
 
-const Alert: React.FC<AlertProps> = ({ children, kind = 'info', ...rest }) => (
+const Alert: React.FC<AlertProps> = ({children, kind = 'info', ...rest}) => (
     <div
         className={prefixCls}
         style={{
