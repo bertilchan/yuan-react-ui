@@ -12,7 +12,11 @@ const paths = {
         dist: 'dist', // umd文件存放的目录名 - 暂时不关心
     },
     styles: 'src/**/*.less', // 样式文件路径 - 暂时不关心
-    scripts: ['src/**/*.{ts,tsx}', '!src/**/demo/*.{ts,tsx}'], // 脚本文件路径
+    scripts: [
+        'src/**/*.{ts,tsx}',
+        '!src/**/demo/*.{ts,tsx}',
+        '!src/**/__tests__/*.{ts,tsx}',
+    ], // 脚本文件路径
 };
 
 /**
@@ -34,7 +38,7 @@ function cssInjection(content) {
  * @param {*} destDir 目标目录
  */
 function compileScripts(babelEnv, destDir) {
-    const { scripts } = paths;
+    const {scripts} = paths;
     process.env.BABEL_ENV = babelEnv;
     return gulp
     .src(scripts)
@@ -61,7 +65,7 @@ function compileScripts(babelEnv, destDir) {
  * 编译cjs
  */
 function compileCJS() {
-    const { dest } = paths;
+    const {dest} = paths;
     return compileScripts('cjs', dest.lib);
 }
 
@@ -69,7 +73,7 @@ function compileCJS() {
  * 编译esm
  */
 function compileESM() {
-    const { dest } = paths;
+    const {dest} = paths;
     return compileScripts('esm', dest.esm);
 }
 
@@ -80,7 +84,8 @@ const buildScripts = gulp.series(compileCJS, compileESM);
  * 拷贝less文件
  */
 function copyLess() {
-    return gulp.src(paths.styles).pipe(gulp.dest(paths.dest.lib)).pipe(gulp.dest(paths.dest.esm));
+    return gulp.src(paths.styles).pipe(gulp.dest(paths.dest.lib)).pipe(
+        gulp.dest(paths.dest.esm));
 }
 
 /**
@@ -91,7 +96,7 @@ function less2css() {
     .src(paths.styles)
     .pipe(less()) // 处理less文件
     .pipe(autoprefixer()) // 根据browserslistrc增加前缀
-    .pipe(cssnano({ zindex: false, reduceIdents: false })) // 压缩
+    .pipe(cssnano({zindex: false, reduceIdents: false})) // 压缩
     .pipe(gulp.dest(paths.dest.lib))
     .pipe(gulp.dest(paths.dest.esm));
 }
