@@ -10,10 +10,10 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
-      - run: yarn
-      - run: yarn build:site
+      - run: npm
+      - run: npm run build:site
       - run: echo 'react-ui.yuanzhixiang.com' >> ./doc-site/CNAME
-      - name: Deploy
+      - name: Deploy github pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
