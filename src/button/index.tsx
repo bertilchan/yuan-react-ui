@@ -1,6 +1,7 @@
 import React from 'react';
-import styles from './index.less';
+import styles from './style/index.less';
 import { tuple } from '@/util/type';
+import classNames from 'classnames';
 
 function isUnborderedButtonType(type: ButtonType | undefined) {
   return type === 'text' || type === 'link';
@@ -20,6 +21,10 @@ export interface BaseButtonProps {
   type?: ButtonType;
 }
 
-export default ({ title }: { title: string }) => (
-  <button className={styles.title}>{title}</button>
-);
+function Button() {
+  const prefixCls = 'yuan';
+  const classes = classNames(prefixCls);
+  return <button className={classes}>test</button>;
+}
+
+export default Button;

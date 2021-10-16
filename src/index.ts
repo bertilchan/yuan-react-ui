@@ -1,3 +1,3 @@
-import Foo from './Foo';
+import Button from './button';
 
-export { Foo };
+export { Button };
