@@ -4,3 +4,11 @@
   position: relative;
   color: red;
 }
+
+.btn-primary(@color; @background; @border) {
+  color: @color;
+  border-color: @border;
+  & when not(@background = null) {
+    background: @background;
+  }
+}

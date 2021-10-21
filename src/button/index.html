@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+
+  <style>
+    .parent {
+      color: red;
+    }
+
+    .parent .son {
+      font-size: 30px;
+    }
+
+    .parent.son {
+      padding-left: 30px;
+    }
+
+    .noise {
+      padding-top: 30px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- 均不生效 -->
+<div class="son">
+  Div Element
+</div>
+
+<!-- 生效: color font-size -->
+<div class="parent">
+  <div class="son">
+    Div Element
+  </div>
+</div>
+
+<!-- 生效: color font-size padding-top -->
+<div class="parent">
+  <div class="noise">
+    <div class="son">
+      Div Element
+    </div>
+  </div>
+</div>
+
+<!-- 生效: color padding-left -->
+<div class="parent son">
+  Div Element
+</div>
+
+</body>
+</html>

@@ -1,7 +1,8 @@
 import React from 'react';
-import styles from './style/index.less';
+import './style';
 import { tuple } from '@/util/type';
 import classNames from 'classnames';
+import { ConfigContext } from '@/config-provider';
 
 function isUnborderedButtonType(type: ButtonType | undefined) {
   return type === 'text' || type === 'link';
@@ -21,10 +22,20 @@ export interface BaseButtonProps {
   type?: ButtonType;
 }
 
-function Button() {
-  const prefixCls = 'yuan';
-  const classes = classNames(prefixCls);
-  return <button className={classes}>test</button>;
+function Button(props: any) {
+  const { loading = false, prefixCls: customizePrefixCls, type } = props;
+
+  let { getPrefixCls } = React.useContext(ConfigContext);
+
+  const prefixCls = getPrefixCls('btn', customizePrefixCls);
+
+  const classes = classNames(prefixCls, {
+    [`${prefixCls}-${type}`]: type,
+  });
+
+  const buttonNode = <button className={classes}>ButtonText</button>;
+
+  return buttonNode;
 }
 
 export default Button;

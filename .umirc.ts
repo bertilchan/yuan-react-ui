@@ -12,12 +12,32 @@ export default defineConfig({
   // Because a custom domain name is used, it can start with root directly.
   base: '/',
   publicPath: '/',
-  navs: [
-    null,
-    {
-      title: 'GitHub',
-      path: 'https://github.com/zhixiangyuan/yuan-react-ui',
-    },
-  ],
+  menus: {
+    // '/guide': [
+    //   {
+    //     title: '菜单项',
+    //     path: '菜单路由（可选）',
+    //     children: [
+    //       'button/index.md'
+    //     ]
+    //   }
+    // ]
+  },
+  navs: {
+    'en-US': [
+      null,
+      {
+        title: 'GitHub-en',
+        path: 'https://github.com/zhixiangyuan/yuan-react-ui',
+      },
+    ],
+    'zh-CN': [
+      null,
+      {
+        title: 'GitHub-zh',
+        path: 'https://github.com/zhixiangyuan/yuan-react-ui',
+      },
+    ],
+  },
   // more config: https://d.umijs.org/config
 });
