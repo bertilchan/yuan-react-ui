@@ -47,7 +47,7 @@ export default () => (
 );
 ```
 
-### Block Button
+### Block
 
 `block` property will make the button fit to its parent width.
 
@@ -71,7 +71,7 @@ export default () => (
 );
 ```
 
-### Ghost Button
+### Ghost
 
 `ghost` property will make button's background transparent, it is commonly used in colored background.
 
@@ -103,7 +103,7 @@ export default () => (
 );
 ```
 
-### Disabled Button
+### Disabled
 
 ```tsx
 import React from 'react';
@@ -126,6 +126,27 @@ export default () => (
     </Button>
     <Button type="link" disabled>
       Link
+    </Button>
+  </>
+);
+```
+
+### Size
+
+```tsx
+import React from 'react';
+import {Button} from 'yuan-react-ui';
+
+export default () => (
+  <>
+    <Button type="primary" size="large">
+      Primary
+    </Button>
+    <Button type="primary" size="default">
+      Primary
+    </Button>
+    <Button type="primary" size="small">
+      Primary
     </Button>
   </>
 );

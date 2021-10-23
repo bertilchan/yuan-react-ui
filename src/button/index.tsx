@@ -30,6 +30,7 @@ function Button(props: any) {
     danger = false,
     block = false,
     ghost = false,
+    size: customizeSize,
 
     ...rest
   } = props;
@@ -38,8 +39,22 @@ function Button(props: any) {
 
   const prefixCls = getPrefixCls('btn', customizePrefixCls);
 
+  console.log(customizeSize)
+  let sizeCls = '';
+  switch (customizeSize) {
+    case 'large':
+      sizeCls = 'lg';
+      break;
+    case 'small':
+      sizeCls = 'sm';
+      break;
+    default:
+      break;
+  }
+
   const classes = classNames(prefixCls, {
     [`${prefixCls}-${type}`]: type,
+    [`${prefixCls}-${sizeCls}`]: sizeCls,
     [`${prefixCls}-dangerous`]: danger,
     [`${prefixCls}-block`]: block,
     [`${prefixCls}-background-ghost`]: ghost && !isUnborderedButtonType(type),
