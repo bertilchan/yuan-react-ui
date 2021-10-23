@@ -27,7 +27,8 @@ function Button(props: any) {
     loading = false,
     prefixCls: customizePrefixCls,
     type,
-    danger
+    danger = false,
+    block = false
   } = props;
 
   let {getPrefixCls} = React.useContext(ConfigContext);
@@ -36,7 +37,8 @@ function Button(props: any) {
 
   const classes = classNames(prefixCls, {
     [`${prefixCls}-${type}`]: type,
-    [`${prefixCls}-dangerous`]: !!danger,
+    [`${prefixCls}-dangerous`]: danger,
+    [`${prefixCls}-block`]: block,
   });
 
   const buttonNode = <button className={classes}>ButtonText</button>;

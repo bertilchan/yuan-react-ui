@@ -45,7 +45,30 @@ export default () => (
     </Button>
   </>
 );
+```
 
+### Block Button
+
+`block` property will make the button fit to its parent width.
+
+```tsx
+import React from 'react';
+import { Button } from 'yuan-react-ui';
+
+export default () => (
+  <>
+    <Button type="primary" block>
+      Primary
+    </Button>
+    <Button block>Default</Button>
+    <Button type="dashed" block>
+      Dashed
+    </Button>
+    <Button type="link" block>
+      Link
+    </Button>
+  </>
+);
 ```
 
 More skills for writing demo: https://d.umijs.org/guide/demo-principle
