@@ -9,7 +9,7 @@ There are `primary` button, `default` button, `dashed` button, `text` button and
 
 ```tsx
 import React from 'react';
-import { Button } from 'yuan-react-ui';
+import {Button} from 'yuan-react-ui';
 
 export default () => (
   <>
@@ -26,7 +26,7 @@ export default () => (
 
 ```tsx
 import React from 'react';
-import { Button } from 'yuan-react-ui';
+import {Button} from 'yuan-react-ui';
 
 export default () => (
   <>
@@ -53,7 +53,7 @@ export default () => (
 
 ```tsx
 import React from 'react';
-import { Button } from 'yuan-react-ui';
+import {Button} from 'yuan-react-ui';
 
 export default () => (
   <>
@@ -77,7 +77,7 @@ export default () => (
 
 ```jsx
 import React from 'react';
-import { Button } from 'yuan-react-ui';
+import {Button} from 'yuan-react-ui';
 
 export default () => (
   <>
@@ -101,13 +101,34 @@ export default () => (
     </div>
   </>
 );
-
-
 ```
 
-```css
+### Disabled Button
 
+```tsx
+import React from 'react';
+import {Button} from 'yuan-react-ui';
+
+export default () => (
+  <>
+    <Button type="primary" disabled>
+      Primary
+    </Button>
+    <Button disabled>Default</Button>
+    <Button type="dashed" disabled>
+      Dashed
+    </Button>
+    <Button type="primary" danger disabled>
+      Danger
+    </Button>
+    <Button type="text" disabled>
+      Text
+    </Button>
+    <Button type="link" disabled>
+      Link
+    </Button>
+  </>
+);
 ```
-
 
 More skills for writing demo: https://d.umijs.org/guide/demo-principle

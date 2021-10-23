@@ -30,6 +30,8 @@ function Button(props: any) {
     danger = false,
     block = false,
     ghost = false,
+
+    ...rest
   } = props;
 
   let {getPrefixCls} = React.useContext(ConfigContext);
@@ -43,7 +45,10 @@ function Button(props: any) {
     [`${prefixCls}-background-ghost`]: ghost && !isUnborderedButtonType(type),
   });
 
-  const buttonNode = <button className={classes}>ButtonText</button>;
+  const buttonNode = <button
+    {...rest}
+    className={classes}
+  >ButtonText</button>;
 
   return buttonNode;
 }
