@@ -28,7 +28,8 @@ function Button(props: any) {
     prefixCls: customizePrefixCls,
     type,
     danger = false,
-    block = false
+    block = false,
+    ghost = false,
   } = props;
 
   let {getPrefixCls} = React.useContext(ConfigContext);
@@ -39,6 +40,7 @@ function Button(props: any) {
     [`${prefixCls}-${type}`]: type,
     [`${prefixCls}-dangerous`]: danger,
     [`${prefixCls}-block`]: block,
+    [`${prefixCls}-background-ghost`]: ghost && !isUnborderedButtonType(type),
   });
 
   const buttonNode = <button className={classes}>ButtonText</button>;

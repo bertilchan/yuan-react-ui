@@ -71,4 +71,43 @@ export default () => (
 );
 ```
 
+### Ghost Button
+
+`ghost` property will make button's background transparent, it is commonly used in colored background.
+
+```jsx
+import React from 'react';
+import { Button } from 'yuan-react-ui';
+
+export default () => (
+  <>
+    <div style={{background: '#C0C8C8', padding: '26px 16px 16px'}}>
+      <Button type="primary" ghost>
+        Primary
+      </Button>
+      <Button ghost>Default</Button>
+      <Button type="dashed" ghost>
+        Dashed
+      </Button>
+      <Button type="primary" danger ghost>
+        Danger
+      </Button>
+      <Button type="text" ghost>
+        Text
+      </Button>
+      <Button type="link" ghost>
+        Link
+      </Button>
+    </div>
+  </>
+);
+
+
+```
+
+```css
+
+```
+
+
 More skills for writing demo: https://d.umijs.org/guide/demo-principle
