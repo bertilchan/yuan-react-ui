@@ -39,7 +39,6 @@ function Button(props: any) {
 
   const prefixCls = getPrefixCls('btn', customizePrefixCls);
 
-  console.log(customizeSize)
   let sizeCls = '';
   switch (customizeSize) {
     case 'large':
