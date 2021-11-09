@@ -1,3 +1,4 @@
 import Button from './button';
+import Space from './space';
 
-export { Button };
+export { Button, Space };
