@@ -1,10 +1,10 @@
 class Paint {
-  private dataArea: HTMLCanvasElement;
-  private coordinateArea: HTMLCanvasElement;
-  private dataBrush: CanvasRenderingContext2D;
-  private coordinateBrush: CanvasRenderingContext2D;
+  private readonly dataArea: HTMLCanvasElement;
+  private readonly coordinateArea: HTMLCanvasElement;
+  private readonly dataBrush: CanvasRenderingContext2D;
+  private readonly coordinateBrush: CanvasRenderingContext2D;
 
-  private interval: number;
+  private readonly interval: number;
 
   constructor(coordinateArea: HTMLCanvasElement, dataArea: HTMLCanvasElement) {
     this.dataArea = dataArea;
