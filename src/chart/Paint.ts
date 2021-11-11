@@ -3,7 +3,9 @@ class Paint {
   private readonly coordinateBrush: CanvasRenderingContext2D;
   private readonly specificBrush: CanvasRenderingContext2D;
 
-  private readonly interval: number;
+  private readonly centerInterval: number;
+  private readonly barWidth: number;
+  private readonly barHalfWidth: number;
 
   constructor(divElement: HTMLDivElement, width: number, height: number) {
     const coordinateWidth = 60;
@@ -24,7 +26,9 @@ class Paint {
     specificStyle.left = '0';
     divElement.appendChild(this.coordinateBrush.canvas);
 
-    this.interval = dataWidth / displayNode;
+    this.centerInterval = dataWidth / displayNode;
+    this.barHalfWidth = this.centerInterval / 3;
+    this.barWidth = this.barHalfWidth * 2;
   }
 
   private static createBrush(
@@ -61,56 +65,124 @@ class Paint {
     );
   }
 
-  public drawLine(data: DataLineType[]) {
-    let path2D = new Path2D();
+  public draw(data: DataType[]) {
     let transformData = this.transform(data);
-
-    path2D.moveTo(transformData[0].x, transformData[0].y);
-    for (let i = 0; i < transformData.length; i++) {
-      path2D.lineTo(transformData[i].x, transformData[i].y);
-    }
-
-    this.dataBrush.strokeStyle = '#726637';
     this.dataBrush.lineWidth = 2;
-    this.dataBrush.stroke(path2D);
+
+    for (let i = 0; i < transformData.length; i++) {
+      const transformDatum = transformData[i];
+
+      if (transformDatum.datum.close >= transformDatum.datum.open) {
+        this.dataBrush.strokeStyle = '#C53530';
+        this.dataBrush.fillStyle = '#C53530';
+      } else {
+        this.dataBrush.strokeStyle = '#479F68';
+        this.dataBrush.fillStyle = '#479F68';
+      }
+
+      let path2D = new Path2D();
+      path2D.moveTo(transformDatum.axis.start.x, transformDatum.axis.start.y);
+      path2D.lineTo(transformDatum.axis.end.x, transformDatum.axis.end.y);
+      this.dataBrush.stroke(path2D);
+
+      const bar = transformDatum.bar;
+      this.dataBrush.fillRect(bar.x, bar.y, bar.width, bar.height);
+    }
   }
 
   private transform(
-    data: DataLineType[],
-  ): { x: number; y: number; datum: DataLineType }[] {
-    let maxValue = data[0].value;
-    let minValue = data[0].value;
+    data: DataType[],
+  ): {
+    axis: {
+      start: {
+        x: number;
+        y: number;
+      };
+      end: {
+        x: number;
+        y: number;
+      };
+    };
+
+    bar: {
+      x: number;
+      y: number;
+      width: number;
+      height: number;
+    };
+
+    datum: DataType;
+  }[] {
+    let maxValue = data[0].high;
+    let minValue = data[0].low;
     for (let i = 0; i < data.length; i++) {
-      if (data[i].value > maxValue) {
-        maxValue = data[i].value;
+      if (data[i].high > maxValue) {
+        maxValue = data[i].high;
       }
 
-      if (data[i].value < minValue) {
-        minValue = data[i].value;
+      if (data[i].low < minValue) {
+        minValue = data[i].low;
       }
     }
 
     const dataArea = this.dataBrush.canvas;
     const ratio = dataArea.height / (maxValue - minValue);
-    const result: { x: number; y: number; datum: DataLineType }[] = [];
+    const result = [];
 
     for (let i = 0; i < data.length; i++) {
-      const x = i * this.interval;
-      const y = dataArea.height - (data[i].value - minValue) * ratio;
+      const x = i * this.centerInterval;
+      const open = dataArea.height - (data[i].open - minValue) * ratio;
+      const close = dataArea.height - (data[i].close - minValue) * ratio;
+      const high = dataArea.height - (data[i].high - minValue) * ratio;
+      const low = dataArea.height - (data[i].low - minValue) * ratio;
 
-      result.push({
-        x: x,
-        y: y,
+      let top;
+      let bottom;
+      if (open < close) {
+        top = open;
+        bottom = close;
+      } else {
+        top = close;
+        bottom = open;
+      }
+
+      const transform = {
+        axis: {
+          start: {
+            x,
+            y: high,
+          },
+          end: {
+            x,
+            y: low,
+          },
+        },
+
+        bar: {
+          x: x - this.barHalfWidth,
+          y: top,
+          width: this.barWidth,
+          height: bottom - top,
+        },
         datum: data[i],
-      });
+      };
+
+      if (transform.bar.height == 0) {
+        transform.bar.height = 1;
+      }
+
+      result.push(transform);
     }
 
     return result;
   }
 }
 
-export interface DataLineType {
-  value: number;
+export interface DataType {
+  open: number;
+  close: number;
+  high: number;
+  low: number;
 }
 
 export default Paint;
