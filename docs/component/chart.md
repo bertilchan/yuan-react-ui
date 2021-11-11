@@ -1,23 +1,15 @@
-[comment]: <> (# Chart)
+# Chart
 
-[comment]: <> (```tsx)
+```tsx
+import React, {useEffect} from 'react';
+import {CandleChart} from 'yuan-react-ui';
 
-[comment]: <> (import React, {useEffect} from 'react';)
+export default () => {
+  useEffect(() => {
+    const div = document.getElementById("candle");
+    const candleChart = new CandleChart(div);
+  }, [])
+  return <div id={"candle"}></div>
 
-[comment]: <> (import {CandleChart} from 'yuan-react-ui';)
-
-[comment]: <> (export default &#40;&#41; => {)
-    
-[comment]: <> (  useEffect&#40;&#40;&#41; => {)
-
-[comment]: <> (    const div = document.getElementById&#40;"candle"&#41;;)
-
-[comment]: <> (    const candleChart = new CandleChart&#40;div&#41;;)
-
-[comment]: <> (  }, []&#41;)
-  
-[comment]: <> (  return <div id={"candle"}></div>)
-
-[comment]: <> (})
-
-[comment]: <> (```)
+}
+```

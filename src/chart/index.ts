@@ -1,20 +1,7 @@
 import Paint, { DataLineType } from './Paint';
 
 function CandleChart(divElement: HTMLDivElement) {
-  const height = 300;
-
-  const dataArea = document.createElement('canvas');
-  dataArea.width = 700;
-  dataArea.height = height;
-
-  const coordinateArea = document.createElement('canvas');
-  coordinateArea.width = 60;
-  coordinateArea.height = height;
-
-  divElement.appendChild(dataArea);
-  divElement.appendChild(coordinateArea);
-
-  let paint = new Paint(coordinateArea, dataArea);
+  let paint = new Paint(divElement, 700, 300);
   paint.fillBackgroundColor('#1E2334', '#282F3E');
 
   const data: DataLineType[] = [];
