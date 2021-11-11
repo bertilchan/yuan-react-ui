@@ -29,6 +29,48 @@ class Paint {
     this.centerInterval = dataWidth / displayNode;
     this.barHalfWidth = this.centerInterval / 3;
     this.barWidth = this.barHalfWidth * 2;
+
+    // Add mouse event
+    const drawCross = Paint.drawCross;
+    const specificBrush = this.specificBrush;
+    this.specificBrush.canvas.onmousemove = function(event) {
+      drawCross(event, specificBrush, dataWidth, height);
+    };
+    const clearCanvas = Paint.clearCanvas;
+    this.specificBrush.canvas.onmouseout = function() {
+      clearCanvas(specificBrush);
+    };
+  }
+
+  private static clearCanvas(brush: CanvasRenderingContext2D) {
+    const canvas = brush.canvas;
+    brush.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
+  private static drawCross(
+    event: MouseEvent,
+    brush: CanvasRenderingContext2D,
+    width: number,
+    height: number,
+  ) {
+    const canvas = brush.canvas;
+    brush.clearRect(0, 0, canvas.width, canvas.height);
+
+    const rect = canvas.getBoundingClientRect();
+    const x = event.clientX - rect.left * (canvas.width / rect.width);
+    const y = event.clientY - rect.top * (canvas.height / rect.height);
+
+    brush.strokeStyle = '#417DF4';
+
+    const row = new Path2D();
+    row.moveTo(x, 0);
+    row.lineTo(x, height);
+    brush.stroke(row);
+
+    const column = new Path2D();
+    column.moveTo(0, y);
+    column.lineTo(width, y);
+    brush.stroke(column);
   }
 
   private static createBrush(
