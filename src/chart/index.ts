@@ -44,8 +44,6 @@ function CandleChart(divElement: HTMLDivElement) {
     });
   }
 
-  console.log(data);
-
   paint.draw(data);
 }
 

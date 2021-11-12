@@ -142,9 +142,29 @@ class Paint {
   }
 
   public draw(data: DataType[]) {
-    this.transform(data);
-    this.dataBrush.lineWidth = 2;
+    // Find max and min value from data
+    let maxValue = data[0].high;
+    let minValue = data[0].low;
+    for (let i = 0; i < data.length; i++) {
+      if (data[i].high > maxValue) {
+        maxValue = data[i].high;
+      }
 
+      if (data[i].low < minValue) {
+        minValue = data[i].low;
+      }
+    }
+
+    // Draw ordinate
+    const interval = Paint.getInterval(maxValue - minValue);
+
+    // Transform data
+    maxValue = maxValue + interval;
+    minValue = minValue - interval < 0 ? minValue : minValue - interval;
+    this.transform(data, maxValue, minValue);
+
+    // Draw bar
+    this.dataBrush.lineWidth = 2;
     for (let i = 0; i < this.cacheData.length; i++) {
       const transformDatum = this.cacheData[i];
 
@@ -166,19 +186,32 @@ class Paint {
     }
   }
 
-  private transform(data: DataType[]) {
-    let maxValue = data[0].high;
-    let minValue = data[0].low;
-    for (let i = 0; i < data.length; i++) {
-      if (data[i].high > maxValue) {
-        maxValue = data[i].high;
-      }
-
-      if (data[i].low < minValue) {
-        minValue = data[i].low;
-      }
+  private static getInterval(difference: number): number {
+    if (difference > 0 && difference < 5) {
+      return 0.5;
+    } else if (difference > 5 && difference < 10) {
+      return 1;
     }
 
+    // Get factor
+    let tmp = difference;
+    let count = 0;
+    while (tmp > 1) {
+      tmp = tmp / 10;
+      count++;
+    }
+
+    let factor = 1;
+    for (let i = 1; i < count; i++) {
+      factor = factor * 10;
+    }
+
+    // Get interval
+    return Math.trunc((difference + factor) / factor) * factor * 0.1;
+  }
+
+  private transform(data: DataType[], maxValue: number, minValue: number) {
+    console.log(data);
     const dataArea = this.dataBrush.canvas;
     const ratio = dataArea.height / (maxValue - minValue);
 
