@@ -4,8 +4,11 @@ class Paint {
   private readonly specificBrush: CanvasRenderingContext2D;
 
   private readonly centerInterval: number;
+  private readonly centerHalfInterval: number;
   private readonly barWidth: number;
   private readonly barHalfWidth: number;
+
+  private cacheData: InnerDataType[] = [];
 
   constructor(divElement: HTMLDivElement, width: number, height: number) {
     const coordinateWidth = 60;
@@ -27,37 +30,41 @@ class Paint {
     divElement.appendChild(this.coordinateBrush.canvas);
 
     this.centerInterval = dataWidth / displayNode;
+    this.centerHalfInterval = this.centerInterval / 2;
     this.barHalfWidth = this.centerInterval / 3;
     this.barWidth = this.barHalfWidth * 2;
 
     // Add mouse event
-    const drawCross = Paint.drawCross;
+    const drawCross = this.drawCross.bind(this);
     const specificBrush = this.specificBrush;
+
     this.specificBrush.canvas.onmousemove = function(event) {
-      drawCross(event, specificBrush, dataWidth, height);
+      drawCross(event, dataWidth, height);
     };
-    const clearCanvas = Paint.clearCanvas;
+    const clearCanvas = this.clearCanvas.bind(this);
     this.specificBrush.canvas.onmouseout = function() {
-      clearCanvas(specificBrush);
+      clearCanvas();
     };
   }
 
-  private static clearCanvas(brush: CanvasRenderingContext2D) {
-    const canvas = brush.canvas;
-    brush.clearRect(0, 0, canvas.width, canvas.height);
+  private clearCanvas() {
+    const canvas = this.specificBrush.canvas;
+    this.specificBrush.clearRect(0, 0, canvas.width, canvas.height);
   }
 
-  private static drawCross(
-    event: MouseEvent,
-    brush: CanvasRenderingContext2D,
-    width: number,
-    height: number,
-  ) {
+  private drawCross(event: MouseEvent, width: number, height: number) {
+    const brush = this.specificBrush;
     const canvas = brush.canvas;
     brush.clearRect(0, 0, canvas.width, canvas.height);
 
     const rect = canvas.getBoundingClientRect();
-    const x = event.clientX - rect.left * (canvas.width / rect.width);
+    const originX = event.clientX - rect.left * (canvas.width / rect.width);
+    const x = this.findXPosition(
+      this.cacheData,
+      0,
+      this.cacheData.length - 1,
+      originX,
+    );
     const y = event.clientY - rect.top * (canvas.height / rect.height);
 
     brush.strokeStyle = '#417DF4';
@@ -71,6 +78,33 @@ class Paint {
     column.moveTo(0, y);
     column.lineTo(width, y);
     brush.stroke(column);
+  }
+
+  private findXPosition(
+    cacheData: InnerDataType[],
+    start: number,
+    end: number,
+    x: number,
+  ): number {
+    const middle = Math.trunc((start + end) / 2);
+
+    if (
+      Math.abs(cacheData[middle].axis.start.x - x) <= this.centerHalfInterval
+    ) {
+      return cacheData[middle].axis.start.x;
+    }
+
+    if (x < cacheData[middle].axis.start.x) {
+      if (middle - 1 < start) {
+        return cacheData[middle].axis.start.x;
+      }
+      return this.findXPosition(cacheData, start, middle - 1, x);
+    } else {
+      if (middle + 1 > end) {
+        return cacheData[middle].axis.start.x;
+      }
+      return this.findXPosition(cacheData, middle + 1, end, x);
+    }
   }
 
   private static createBrush(
@@ -108,11 +142,11 @@ class Paint {
   }
 
   public draw(data: DataType[]) {
-    let transformData = this.transform(data);
+    this.transform(data);
     this.dataBrush.lineWidth = 2;
 
-    for (let i = 0; i < transformData.length; i++) {
-      const transformDatum = transformData[i];
+    for (let i = 0; i < this.cacheData.length; i++) {
+      const transformDatum = this.cacheData[i];
 
       if (transformDatum.datum.close >= transformDatum.datum.open) {
         this.dataBrush.strokeStyle = '#C53530';
@@ -132,29 +166,7 @@ class Paint {
     }
   }
 
-  private transform(
-    data: DataType[],
-  ): {
-    axis: {
-      start: {
-        x: number;
-        y: number;
-      };
-      end: {
-        x: number;
-        y: number;
-      };
-    };
-
-    bar: {
-      x: number;
-      y: number;
-      width: number;
-      height: number;
-    };
-
-    datum: DataType;
-  }[] {
+  private transform(data: DataType[]) {
     let maxValue = data[0].high;
     let minValue = data[0].low;
     for (let i = 0; i < data.length; i++) {
@@ -169,7 +181,6 @@ class Paint {
 
     const dataArea = this.dataBrush.canvas;
     const ratio = dataArea.height / (maxValue - minValue);
-    const result = [];
 
     for (let i = 0; i < data.length; i++) {
       const x = i * this.centerInterval;
@@ -213,11 +224,31 @@ class Paint {
         transform.bar.height = 1;
       }
 
-      result.push(transform);
+      this.cacheData.push(transform);
     }
-
-    return result;
   }
+}
+
+interface InnerDataType {
+  axis: {
+    start: {
+      x: number;
+      y: number;
+    };
+    end: {
+      x: number;
+      y: number;
+    };
+  };
+
+  bar: {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+  };
+
+  datum: DataType;
 }
 
 export interface DataType {
