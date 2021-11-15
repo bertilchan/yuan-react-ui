@@ -1,9 +1,12 @@
 import * as React from 'react';
 import defaultRenderEmpty, { RenderEmptyHandler } from './renderEmpty';
 
+export type DirectionType = 'ltr' | 'rtl' | undefined;
+
 export interface ConfigConsumerProps {
   getPrefixCls: (suffixCls?: string, customizePrefixCls?: string) => string;
   renderEmpty: RenderEmptyHandler;
+  direction?: DirectionType;
 }
 
 const defaultGetPrefixCls = (
